@@ -16,7 +16,7 @@ def get_books_by_author(author_name):
     except Author.DoesNotExist:
         return "Author not found."
     
-    def get_librarian_for_library(library_name):
+def get_librarian_for_library(library_name):
     try:
         library = Library.objects.get(name=library_name)  # Get the library by name
         librarian = Librarian.objects.get(library=library)  # Retrieve the librarian for this library
