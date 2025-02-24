@@ -1,4 +1,4 @@
-from relationship_app.models import Library, Author, Book
+from relationship_app.models import Library, Author, Book, Librarian, Library
 
 def list_books_in_library(library_name):
     try:
@@ -15,3 +15,13 @@ def get_books_by_author(author_name):
         return books
     except Author.DoesNotExist:
         return "Author not found."
+    
+    def get_librarian_for_library(library_name):
+    try:
+        library = Library.objects.get(name=library_name)  # Get the library by name
+        librarian = Librarian.objects.get(library=library)  # Retrieve the librarian for this library
+        return librarian
+    except Library.DoesNotExist:
+        return "Library not found."
+    except Librarian.DoesNotExist:
+        return "No librarian assigned to this library."
