@@ -21,7 +21,7 @@ def login_view(request):
         if form.is_valid():
             user = form.get_user()
             login(request, user)
-            return redirect("list_books")  # Redirect to books list after login
+            return redirect("list_books")  
     else:
         form = AuthenticationForm()
     return render(request, "login.html", {"form": form})
