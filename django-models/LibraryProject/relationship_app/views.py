@@ -3,7 +3,8 @@ from django.views.generic import DetailView
 from django.views.generic.detail import DetailView
 from django.views.generic.list import ListView
 from django.contrib.auth import login, logout
-from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
+from django.contrib.auth.forms import AuthenticationForm
+from django.contrib.auth.forms import UserCreationForm
 from django.shortcuts import render, redirect
 from .models import Book
 from .models import Library
