@@ -3,6 +3,8 @@ from django.contrib.auth.models import User
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 
+from advanced_features_and_security.LibraryProject.LibraryProject import settings
+
 
 class Book(models.Model):
     title = models.CharField(max_length=255)
@@ -56,7 +58,7 @@ class Meta:
          return self.title    
 
 class SomeModel(models.Model):
-    user = models.ForeignKey(settings.advanced_features_and_security, on_delete=models.CASCADE)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
 
 
 # Signal to automatically create UserProfile when a User is created
