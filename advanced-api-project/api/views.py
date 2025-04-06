@@ -1,5 +1,6 @@
-from rest_framework import viewsets,generics, permissions, serializers
+from rest_framework import viewsets,generics, permissions, serializers, filters
 from rest_framework.permissions import IsAuthenticatedOrReadOnly, IsAuthenticated
+from django_filters.rest_framework import DjangoFilterBackend
 from .models import Author, Book
 from .serializers import AuthorSerializer, BookSerializer
 from datetime import date
@@ -70,13 +71,19 @@ class BookSerializer(serializers.ModelSerializer):
         return value    
     
 class BookListCreateView(generics.ListCreateAPIView):
-    
     queryset = Book.objects.all()
     serializer_class = BookSerializer
-    
-class BookListCreateView(generics.ListCreateAPIView):
-    queryset = Book.objects.all()
-    serializer_class = BookSerializer    
+    permission_classes = [IsAuthenticatedOrReadOnly]
+
+    filter_backends = [
+        DjangoFilterBackend,
+        filters.SearchFilter,
+        filters.OrderingFilter
+    ]
+    filterset_fields = ['title', 'author', 'publication_year']
+    search_fields = ['title', 'author']
+    ordering_fields = ['title', 'publication_year']
+    ordering = ['title']    
     
 class BookUpdateView(generics.RetrieveUpdateAPIView):
     queryset = Book.objects.all()
