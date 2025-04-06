@@ -1,6 +1,7 @@
 from rest_framework import viewsets,generics, permissions, serializers, filters
-from rest_framework.permissions import IsAuthenticatedOrReadOnly, IsAuthenticated
+from rest_framework.permissions import IsAuthenticatedOrReadOnly
 from django_filters.rest_framework import DjangoFilterBackend
+from django_filters import rest_framework
 from .models import Author, Book
 from .serializers import AuthorSerializer, BookSerializer
 from datetime import date
@@ -76,7 +77,7 @@ class BookListCreateView(generics.ListCreateAPIView):
     permission_classes = [IsAuthenticatedOrReadOnly]
 
     filter_backends = [
-        DjangoFilterBackend,
+        rest_framework.DjangoFilterBackend,
         filters.SearchFilter,
         filters.OrderingFilter
     ]
