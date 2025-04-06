@@ -1,4 +1,5 @@
-from rest_framework import viewsets, generics, permissions, serializers, filters
+from rest_framework import viewsets, permissions, serializers, filters
+from rest_framework import generics 
 from rest_framework.permissions import IsAuthenticatedOrReadOnly
 from django_filters.rest_framework import DjangoFilterBackend
 from django_filters import rest_framework
