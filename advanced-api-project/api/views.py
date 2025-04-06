@@ -3,13 +3,20 @@ from .models import Author, Book
 from .serializers import AuthorSerializer, BookSerializer
 from datetime import date
 from .permissions import IsOwnerOrReadOnly
-from django.views.generic import ListView, UpdateView, DeleteView
+from django.views.generic import ListView, UpdateView, DeleteView,CreateView
 
 
 class BookListView(ListView):
     model = Book
     template_name = 'books/book_list.html'  
 
+class BookCreateView(CreateView):
+    model = Book
+    fields = ['title', 'author', 'published_date']
+    template_name = 'books/book_form.html'
+    success_url = '/books/'
+    
+    
 class BookUpdateView(UpdateView):
     model = Book
     fields = ['title', 'author', 'published_date']
