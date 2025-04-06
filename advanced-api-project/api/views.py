@@ -1,10 +1,12 @@
 from rest_framework import viewsets,generics, permissions, serializers
+from rest_framework.permissions import IsAuthenticatedOrReadOnly, IsAuthenticated
 from .models import Author, Book
 from .serializers import AuthorSerializer, BookSerializer
 from datetime import date
 from .permissions import IsOwnerOrReadOnly
 from django.views.generic import ListView, UpdateView, DeleteView,CreateView
 
+permission_classes = [IsAuthenticatedOrReadOnly]
 
 class BookListView(ListView):
     model = Book
