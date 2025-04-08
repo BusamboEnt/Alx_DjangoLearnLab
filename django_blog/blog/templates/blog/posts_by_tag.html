@@ -1,0 +1,9 @@
+{% extends 'blog/base_generic.html' %}
+{% block content %}
+  <h2>Posts tagged with "{{ tag.name }}"</h2>
+  {% for post in posts %}
+    <div>
+      <a href="{% url 'blog:post-detail' post.pk %}">{{ post.title }}</a>
+    </div>
+  {% endfor %}
+{% endblock %}
