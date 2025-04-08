@@ -9,5 +9,5 @@
     <button type="submit">{% if form.instance.pk %}Save changes{% else %}Post Comment{% endif %}</button>
   </form>
 
-  <a href="{{ object.get_absolute_url }}">Back to post</a>
+  <a href="{{ form.instance.post.get_absolute_url }}">Back to post</a>
 {% endblock %}
