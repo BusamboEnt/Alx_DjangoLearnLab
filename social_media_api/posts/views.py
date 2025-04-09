@@ -3,7 +3,7 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from .models import Post, Comment, Like 
 from django.contrib.auth.decorators import login_required
-from django.shortcuts import render, get_object_or_404, redirect
+from django.shortcuts import get_object_or_404, redirect
 from posts.models import Post, Like
 from accounts.models import CustomUser
 from django.contrib.contenttypes.models import ContentType
@@ -11,22 +11,22 @@ from notifications.models import Notification
 from .serializers import PostSerializer, CommentSerializer
 
 @login_required
+def like_post(request, pk):
+
+    post = get_object_or_404(Post, pk=pk)
+    
+    like, created = Like.objects.get_or_create(user=request.user, post=post)
+
+    return redirect('post_detail', pk=post.pk)
+
+@login_required
 def unlike_post(request, pk):
+    
     post = get_object_or_404(Post, pk=pk)
     
     like = Like.objects.filter(user=request.user, post=post).first()
     if like:
         like.delete()
-
-    
-    return redirect('post_detail', pk=post.pk)
-
-@login_required
-def like_post(request, pk):
-   
-    post = get_object_or_404(Post, pk=pk)
-
-    like, created = Like.objects.get_or_create(user=request.user, post=post)
 
     return redirect('post_detail', pk=post.pk)
 class PostViewSet(viewsets.ModelViewSet):
