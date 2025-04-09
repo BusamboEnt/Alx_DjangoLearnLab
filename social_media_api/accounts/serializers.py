@@ -1,5 +1,6 @@
 from rest_framework import serializers
 from django.contrib.auth import get_user_model
+from rest_framework.authtoken.models import Token
 from django.contrib.auth.password_validation import validate_password
 
 User = get_user_model()
@@ -14,7 +15,7 @@ class UserRegistrationSerializer(serializers.ModelSerializer):
 
     def validate(self, attrs):
         if attrs['password'] != attrs['password2']:
-            raise serializers.ValidationError({"password": "Password fields didn't match."})
+            raise serializers.ValidationError({"password": "Passwords don't match."})
         return attrs
 
     def create(self, validated_data):
@@ -24,4 +25,5 @@ class UserRegistrationSerializer(serializers.ModelSerializer):
             email=validated_data['email'],
             password=validated_data['password'],
         )
+        Token.objects.create(user=user)  
         return user
