@@ -12,4 +12,6 @@ urlpatterns = [
     path('feed/', views.FeedViewSet.as_view({'get': 'list'}), name='feed'),
     path('<int:pk>/like/', LikePostView.as_view(), name='like-post'),
     path('<int:pk>/unlike/', UnlikePostView.as_view(), name='unlike-post'),
+    path('post/<int:pk>/like/', views.like_post, name='like_post'),
+    path('post/<int:pk>/unlike/', views.unlike_post, name='unlike_post'),
 ]
