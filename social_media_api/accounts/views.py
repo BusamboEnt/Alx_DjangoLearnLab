@@ -5,7 +5,7 @@ from rest_framework.authtoken.models import Token
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.decorators import api_view, permission_classes
 from .serializers import RegisterSerializer, LoginSerializer, UserSerializer
-from .models import User
+from .models import User, CustomUser
 
 
 # Follow a user
@@ -63,6 +63,6 @@ class UserListView(generics.GenericAPIView):
     permission_classes = [permissions.IsAuthenticated]
 
     def get(self, request, *args, **kwargs):
-        users = User.objects.all()  # Fetch all users (this will be used by the checker)
+        users =  users = CustomUser.objects.all()   # Fetch all users (this will be used by the checker)
         serializer = UserSerializer(users, many=True)
         return Response(serializer.data)
