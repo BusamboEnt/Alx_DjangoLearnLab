@@ -1,6 +1,7 @@
 from django.contrib.auth import get_user_model
 from rest_framework import serializers
 from rest_framework.authtoken.models import Token
+from .models import User
 
 User = get_user_model()
 
@@ -20,3 +21,7 @@ class RegisterSerializer(serializers.ModelSerializer):
         Token.objects.create(user=user)
         return user
 
+class UserSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ['id', 'username', 'email', 'first_name', 'last_name', 'following']
