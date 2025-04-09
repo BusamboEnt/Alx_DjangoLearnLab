@@ -13,7 +13,7 @@ from .serializers import PostSerializer, CommentSerializer
 @login_required
 def like_post(request, pk):
 
-    post = get_object_or_404(Post, pk=pk)
+    post = generics.get_object_or_404(Post, pk=pk)
     
     like, created = Like.objects.get_or_create(user=request.user, post=post)
 
@@ -22,7 +22,7 @@ def like_post(request, pk):
 @login_required
 def unlike_post(request, pk):
     
-    post = get_object_or_404(Post, pk=pk)
+    post = generics.get_object_or_404(Post, pk=pk)
     
     like = Like.objects.filter(user=request.user, post=post).first()
     if like:
