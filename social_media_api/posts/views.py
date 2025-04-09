@@ -1,8 +1,11 @@
-from rest_framework import viewsets, permissions, generics
+from rest_framework import viewsets, permissions, generics, status
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from .models import Post, Comment
+from posts.models import Post, Like
 from accounts.models import CustomUser
+from django.contrib.contenttypes.models import ContentType
+from notifications.models import Notification
 from .serializers import PostSerializer, CommentSerializer
 
 class PostViewSet(viewsets.ModelViewSet):
@@ -61,3 +64,42 @@ class UserFeedView(generics.ListAPIView):
         queryset = self.get_queryset()
         serializer = PostSerializer(queryset, many=True)
         return Response(serializer.data)    
+    
+class LikePostView(generics.GenericAPIView):
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request, pk):
+        post = Post.objects.get(pk=pk)
+        user = request.user
+
+        if Like.objects.filter(user=user, post=post).exists():
+            return Response({"detail": "You have already liked this post."}, status=status.HTTP_400_BAD_REQUEST)
+
+       
+        like = Like.objects.create(user=user, post=post)
+
+        Notification.objects.create(
+            recipient=post.author,
+            actor=user,
+            verb="liked your post",
+            target_content_type=ContentType.objects.get_for_model(post),
+            target_object_id=post.id
+        )
+
+        return Response({"detail": "Post liked successfully."}, status=status.HTTP_201_CREATED)
+
+
+class UnlikePostView(generics.GenericAPIView):
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request, pk):
+        post = Post.objects.get(pk=pk)
+        user = request.user
+
+        like = Like.objects.filter(user=user, post=post).first()
+        if not like:
+            return Response({"detail": "You have not liked this post."}, status=status.HTTP_400_BAD_REQUEST)
+
+        like.delete()
+
+        return Response({"detail": "Post unliked successfully."}, status=status.HTTP_204_NO_CONTENT)    
